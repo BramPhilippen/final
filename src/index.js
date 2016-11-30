@@ -10,17 +10,10 @@ var {Gmaps, Marker} = ReactGMaps
 var movieData = require('./movies.json')
 var theatres = require('./theatres.json')
 
-// There should really be some JSON-formatted data in movies.json, instead of an empty array.
-// I started writing this command to extract the data from the learn-sql workspace
-// on C9, but it's not done yet :) You must have the csvtojson command installed for this to work.
-// npm install -g csvtojson
-// sqlite3 -csv -header movies.sqlite3 'select "imdbID" as id, "title" from movies' | csvtojson --maxRowLength=0 > movies.json
-
-// Firebase
 var Rebase = require('re-base')
 var base = Rebase.createClass({
-  apiKey: "AIzaSyA4IoJ8YHyiFKHTlnR5qkL0iz7eIvxXucA",   // replace with your Firebase application's API key
-  databaseURL: "https://my-awesome-project-46f3c.firebaseio.com/", // replace with your Firebase application's database URL
+  apiKey: "AIzaSyA4IoJ8YHyiFKHTlnR5qkL0iz7eIvxXucA",
+  databaseURL: "https://my-awesome-project-46f3c.firebaseio.com/",
 })
 
 var MovieList = React.createClass({
@@ -167,10 +160,10 @@ var App = React.createClass({
   },
   resetMovieListClicked: function() {
     this.setState({
-      movies: movieData.sort(this.movieCompareByReleased)
+      movies: movieData.sort(this.movieCompareByReleased),
+      currentView:'latest'
     })
   },
-  //begin of trial
   viewChanged: function(view) {
     if (view === 'latest') {
      this.setState({
@@ -192,14 +185,6 @@ var App = React.createClass({
       });
     }
   },
-  //  if (this.state.currentView === 'alpha') {
-  //    return {movies: movieData.sort(this.movieCompareByTitle)}
-  //  }
-    // View is either "latest" (movies sorted by release), "alpha" (movies
-    // sorted A-Z), or "map" (the data visualized)
-    // We should probably do the sorting and setting of movies in state here.
-    // You should really look at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-  //end of trial
   renderMovieDetails: function() {
     if (this.state.currentMovie == null) {
       return <NoCurrentMovie resetMovieListClicked={this.resetMovieListClicked} />
